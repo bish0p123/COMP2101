@@ -16,40 +16,67 @@
 
 
 get-ciminstance win32_computersystem | 
-format-table @{n="Hardware Description" ; width = 15 ; e={$_.description}}
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"Hardware Description" = $_.Description
+		}
+		} |
+		Format-List "Hardware Description"
 
 get-ciminstance win32_operatingsystem | 
-format-table @{n="System Name" ; width = 15 ; e={$_.name}},
-@{n="Version Number" ; width = 20 ; e={$_.version}}
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"System Name" = $_.name
+			"Version Number" = $_.version
+		}
+		} |
+		Format-List "System Name", "Version Number"
 
 get-ciminstance win32_processor | 
-format-table @{n="Description" ; width = 15 ; e={$_.description}},
-@{n="Speed" ; width = 20 ; e={$_.maxclockspeed}},
-@{n="Number of Cores" ; width = 20 ; e={$_.numberofcores}},
-@{n="Size of Cache L1" ; width = 20 ; e={$_.l1cachesize}},
-@{n="Size of Cache L2" ; width = 20 ; e={$_.l2cachesize}},
-@{n="Size of Cache L3" ; width = 20 ; e={$_.l3cachesize}}
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"Description" = $_.description
+			"Max Clock Speed" = $_.maxclockspeed
+			"Number of Cores" = $_.numberofcores
+			"L1 Cache Size" = $_.l1cachesize
+			"L2 Cache Size" = $_.l2cachesize
+			"L3 Cache Size" = $_.l3cachesize
+		}
+		} |
+		Format-List "Description", "Max Clock Speed", "Number of Cores", "L1 Cache Size", "L2 Cache Size", "L3 Cache Size"
 
 get-ciminstance win32_physicalmemory | 
-format-table @{n="Description" ; width = 15 ; e={$_.description}},
-@{n="Vendor" ; width = 20 ; e={$_.partnumber}},
-@{n="Description" ; width = 20 ; e={$_.description}},
-@{n="Size" ; width = 20 ; e={$_.capacity}},
-@{n="Bank Slot" ; width = 20 ; e={$_.banklabel}},
-@{n="Capacity" ; width = 20 ; e={$_.capacity}}
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"Description" = $_.description
+			"Vendor" = $_.partnumber
+			"Size" = $_.capacity
+			"Bank Slot" = $_.banklabel
+			"Capacity" = $_.capacity
+		}
+		} |
+		Format-Table "Description", "Vendor", "Size", "Bank Slot", "Capacity"
 
-get-ciminstance win32_networkadapterconfiguration | where-object ipenabled | 
-format-table @{n="Description" ; width = 15 ; e={$_.description}},
-@{n="Index" ; width = 20 ; e={$_.index}},
-@{n="IPAddress" ; width = 20 ; e={$_.ipaddress}},
-@{n="IPSubnet" ; width = 20 ; e={$_.ipsubnet}},
-@{n="DNSDomain" ; width = 20 ; e={$_.DNSDomain}},
-@{n="DNSServer" ; width = 20 ; e={$_.DNSServerSearchOrder}}
+get-ciminstance win32_networkadapterconfiguration | where-object ipenabled |
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"Description" = $_.description
+			"Index" = $_.index
+			"IP Address" = $_.ipaddress
+			"IP Subnet" = $_.ipsubnet
+			"DNS Domain" = $_.DNSDomain
+			"DNS Server" = $_.DNSServerSearchOrder
+		}
+		} |
+		Format-Table "Description", "Index", "IP Address", "IP Subnet", "DNS Domain", "DNS Server"
 
 get-ciminstance win32_videocontroller | 
-format-table @{n="Description" ; width = 15 ; e={$_.description}},
-@{n="Vendor" ; width = 20 ; e={$_.name}},
-@{n="Horizontal Resolution" ; width = 20 ; e={$_.currenthorizontalresolution}},
-@{n="Vertical Resolution" ; width = 20 ; e={$_.currentverticalresolution}}
-
-
+	foreach {
+		New-Object -TypeName psobject -Property @{
+			"Description" = $_.description
+			"Vendor" = $_.name
+			"Horizontal Resolution" = $_.currenthorizontalresolution
+			"Vertical Resolution" = $_.currentverticalresolution
+		}
+		} |
+		Format-List "Description", "Vendor", "Horizontal Resolution", "Vertical Resolution"
